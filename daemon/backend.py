@@ -85,6 +85,7 @@ def run_backend(ip, port, routes):
 
         while True:
             conn, addr = server.accept()
+            handle_client(ip, port, conn, addr, routes)
             #
             #  TODO: implement the step of the client incomping connection
             #        using multi-thread programming with the
