@@ -59,15 +59,38 @@ def parse_virtual_hosts(config_file):
         config_text = f.read()
 
     # Match each host block
+    # re.DOTALL for '.' matching everything (especially the \n in the config "{\n proxy_pass... \n }")
+    # First group:
+    #   ([^"]+): Matching everything inside the quote, like "string" then got string
+    #   (.*?): . is now DOTALL so match EVERY CHARACTER, *? is lazy -> match nearest block of {}
+    # In simple context the second block could be like: ([^{]+) but there maybe nested case
+    # Output: LIST of Tuple(2)
+    # [
+    #   (hostname or ip, the rest inside the {}), ...
+    # ]
+    # Or just [(host_i, block_i)]
     host_blocks = re.findall(r'host\s+"([^"]+)"\s*\{(.*?)\}', config_text, re.DOTALL)
 
     dist_policy_map = ""
 
     routes = {}
+    # proxy_map is the dictionary that do the mapping for the oarse host_blocks
+    # host_blocks = [
+    #   (host_i, block_i),
+    #   ...
+    #]
+    # proxy_map = {
+    #   host_i: ip1, ip2... (ip is parse from block_i) 
+    #   ...
+    #}
+
+    proxy_map = {}
     for host, block in host_blocks:
-        proxy_map = {}
+        # ERROR: FIX THIS???
+        # proxy_map = {}
 
         # Find all proxy_pass entries
+        # (^\s;)+: Match any character except whitespace or ;.
         proxy_passes = re.findall(r'proxy_pass\s+http://([^\s;]+);', block)
         map = proxy_map.get(host,[])
         map = map + proxy_passes

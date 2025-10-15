@@ -84,10 +84,21 @@ def resolve_routing_policy(hostname, routes):
     Handles an routing policy to return the matching proxy_pass.
     It determines the target backend to forward the request to.
 
-    :params host (str): IP address of the request target server.
-    :params port (int): port number of the request target server.
-    :params routes (dict): dictionary mapping hostnames and location.
+    :params hostname (str): hostname of the target server
+    :params routes (dict): dictionary mapping hostnames and location. 
+
+    Routes mapping from:
+    {
+        hostname: (proxy_map, dist_policy)
+    }
+    proxymap is a list of ip (len > 2 or else singulair)
+
+    .e.g.: routes = {
+        'app2.local': ([192.168.56.210:9002, 192.168.56.220:9002], 'round_robin')
+    }
     """
+
+    
 
     print(hostname)
     proxy_map, policy = routes.get(hostname, ("127.0.0.1:9000", "round-robin"))
