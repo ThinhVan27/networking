@@ -34,6 +34,12 @@ PORT = 8000  # Default port
 
 app = WeApRous()
 
+# Basically it just register the login function (it is call a hook)
+# to the routes dictionary
+# a dict that:
+# {
+#   (method, path): function hook
+#}
 @app.route('/login', methods=['POST'])
 def login(headers="guest", body="anonymous"):
     """

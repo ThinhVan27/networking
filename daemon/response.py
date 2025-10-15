@@ -31,7 +31,7 @@ class Response():
     """The :class:`Response <Response>` object, which contains a
     server's response to an HTTP request.
 
-    Instances are generated from a :class:`Request <Request>` object, and
+    Instances are generated from a :class:`Response <Response>` object, and
     should not be instantiated manually; doing so may produce undesirable
     effects.
 
@@ -197,6 +197,8 @@ class Response():
         filepath = os.path.join(base_dir, path.lstrip('/'))
 
         print("[Response] serving the object at location {}".format(filepath))
+        with open(filepath, 'rb') as f:
+            content = f.read()
             #
             #  TODO: implement the step of fetch the object file
             #        store in the return value of content
@@ -242,6 +244,10 @@ class Response():
             #  TODO: implement the header building to create formated
             #        header from the provied headers
             #
+
+        status_line = f"HTTP/1.1 {self.status_code or 200} {self.reason or "OK"}\r\n"
+        header_lines = [f"{k}: {v}" for k, v in headers.items()]  
+        fmt_header = status_line + "\r\n".join(header_lines) + "\r\n\r\n"
         #
         # TODO prepare the request authentication
         #

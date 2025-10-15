@@ -66,6 +66,21 @@ class Request():
         #: Hook point for routed mapped-path
         self.hook = None
 
+    """
+    method path version\r\n
+    header_field_name: value\r\n
+    header_field_name: value\r\n
+    header_field_name: value\r\n
+    ...
+    \r\n
+    body
+
+    Example header:
+    GET /index.html HTTP/1.1 
+    Host: www-net.cs.umass.edu
+    User-Agent: Firefox/3.6.10
+    Connection: keep-alive
+    """
     def extract_request_line(self, request):
         try:
             lines = request.splitlines()
@@ -106,6 +121,7 @@ class Request():
         if not routes == {}:
             self.routes = routes
             self.hook = routes.get((self.method, self.path))
+            # NOTE: Actually i dont think we have to do any manip the hook at this place
             #
             # self.hook manipulation goes here
             # ...

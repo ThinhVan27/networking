@@ -19,6 +19,7 @@ class CaseInsensitiveDict(MutableMapping):
 
     Usage::
 
+      Example 1:
       >>> import tools
       >>> word = CaseInsensitiveDict(status_code='404', msg="Not found")
       >>> code = word['status_code']
@@ -31,6 +32,13 @@ class CaseInsensitiveDict(MutableMapping):
 
       >>> print(word)
       {'status_code': '404', 'msg': 'Not found'}
+
+      Example 2:
+      >>> import tools
+      >>> word = CaseInsensitiveDict([('status_code', '404'), ('msg', 'Not found')])
+
+      Example 3:
+      >>> word = CaseInsensitiveDict([('status_code', '404')], msg="Not found")
 
     """
 
